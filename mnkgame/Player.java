@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Player implements MNKPlayer {
 
-    private Random rand;
+	private Random rand;
 	private MNKBoard B;
 	private MNKGameState myWin;
 	private MNKGameState yourWin;
@@ -14,11 +14,11 @@ public class Player implements MNKPlayer {
 	}
 
 	public void initPlayer(int M, int N, int K, boolean first, int timeout_in_secs) {
-		rand    = new Random(System.currentTimeMillis()); 
-		B       = new MNKBoard(M,N,K);
-		myWin   = first ? MNKGameState.WINP1 : MNKGameState.WINP2; 
+		rand = new Random(System.currentTimeMillis());
+		B = new MNKBoard(M, N, K);
+		myWin = first ? MNKGameState.WINP1 : MNKGameState.WINP2;
 		yourWin = first ? MNKGameState.WINP2 : MNKGameState.WINP1;
-		TIMEOUT = timeout_in_secs;	
+		TIMEOUT = timeout_in_secs;
 	}
 
 	public MNKCell selectCell(MNKCell[] FC, MNKCell[] MC) {
@@ -27,63 +27,64 @@ public class Player implements MNKPlayer {
 
 	}
 
-	//Funzione che ritorna la cella libera più vicina al centro della matrice
-	//FINIRE LA FUNZIONE CON CONTROLLO CHE NON VADA FUORI DAL BORDO
-	public MNKCell freeCenterCell (MNKCell[][] mat, int n, int m) { //i è righe come m. j è colonne come n
-		int nCenter = n/2;
-		int mCenter = m/2;
+	// Funzione che ritorna la cella libera più vicina al centro della matrice
+	// FINIRE LA FUNZIONE CON CONTROLLO CHE NON VADA FUORI DAL BORDO
+	public MNKCell freeCenterCell(MNKCell[][] mat, int n, int m) { // i è righe come m. j è colonne come n
+		int nCenter = n / 2;
+		int mCenter = m / 2;
 		Direction going = Direction.right;
-		int goDown = (nCenter)+1;
-		int goLeft = (mCenter)+1;
-		int goUp = (nCenter)-1;
-		int goRight = (mCenter)-1;
+		int goDown = (nCenter) + 1;
+		int goLeft = (mCenter) + 1;
+		int goUp = (nCenter) - 1;
+		int goRight = (mCenter) - 1;
 		while (true) {
-			MNKCell centerCell = mat[nCenter][mCenter];
+			MNKCell centerCell = mat[mCenter][nCenter];
 			if (centerCell.state == MNKCellState.FREE) {
 				return centerCell;
 			}
 			switch (going) {
-				case right: 
+				case right:
 					if (centerCell.j == goDown) {
 						goDown++;
-						mCenter++;
+						nCenter++;
 						going = Direction.down;
 					} else {
-						nCenter++;
+						mCenter++;
 					}
-				break;
+					break;
 				case down:
 					if (centerCell.i == goLeft) {
 						goLeft++;
-						nCenter--;;
+						mCenter--;
+						;
 						going = Direction.left;
 					} else {
-						mCenter++;
+						nCenter++;
 					}
-				break;
+					break;
 				case left:
 					if (centerCell.j == goUp) {
 						goUp--;
-						mCenter--;
+						nCenter--;
 						going = Direction.up;
 					} else {
-						nCenter--;
+						mCenter--;
 					}
-				break;
+					break;
 				case up:
 					if (centerCell.i == goRight) {
 						goRight--;
-						nCenter++;
+						mCenter++;
 						going = Direction.right;
 					} else {
-						mCenter--;
+						nCenter--;
 					}
-				break;
+					break;
 			}
 		}
 	}
 
-    public String playerName() {
+	public String playerName() {
 		return "KUNG SLAO";
 	}
 }
