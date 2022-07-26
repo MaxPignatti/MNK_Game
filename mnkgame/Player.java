@@ -22,9 +22,43 @@ public class Player implements MNKPlayer {
 	}
 
 	public MNKCell selectCell(MNKCell[] FC, MNKCell[] MC) {
-		Matrice mat = new Matrice();
-		mat.initMat(B);
+		Matrice mat = new Matrice(B);
+		mat.initMat();
 
+	}
+
+	public Sequence[] getAllSequences (MNKCell[][] mat, MNKBoard B) {
+		int index=0;
+		int counter;
+		Sequence[] allSequences;
+		for (int row = 1; row <= B.M; row ++) {
+			counter = 0;
+			for (int column = 1; column <= B.N; column ++) {
+				if (column == 1 && mat[row][1].state != MNKCellState.FREE) {
+					counter++;
+				} else {
+					if (mat[row][column].state != mat[row][column - 1].state && mat[row][column - 1].state != MNKCellState.FREE) {
+						if (counter >= 1) {
+							boolean state;
+							if (mat[row][column - 1].state==MNKCellState.P1) {
+								state = false;
+							} else {
+								state = true;
+							}
+							allSequences[index] = new Sequence(mat[row][column-counter-1], mat[row][column-1], counter, state);
+							index++;
+							counter = 0;
+						} 
+					} else {
+						if (mat[row][column-1].state == MNKCellState.FREE) {
+							counter = 0;
+						} else {
+							counter++;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	// Funzione che ritorna la cella libera più vicina al centro della matrice
@@ -37,10 +71,11 @@ public class Player implements MNKPlayer {
 		int goLeft = (mCenter) + 1;
 		int goUp = (nCenter) - 1;
 		int goRight = (mCenter) - 1;
+		MNKCell centerCell;
 		while (true) {
-			MNKCell centerCell = mat[mCenter][nCenter];
+			centerCell = mat[mCenter][nCenter];
 			if (centerCell.state == MNKCellState.FREE) {
-				return centerCell;
+				break;
 			}
 			switch (going) {
 				case right:
@@ -82,6 +117,7 @@ public class Player implements MNKPlayer {
 					break;
 			}
 		}
+		return centerCell;
 	}
 
 	public String playerName() {
