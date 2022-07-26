@@ -21,8 +21,12 @@ public class Sequence {
         return lastCell;
     }
 
-    public int getlength () {
+    public int getLength () {
         return length;
+    }
+
+    public void setLength (int length) {
+        this.length = length;
     }
 
     public boolean getState () {
