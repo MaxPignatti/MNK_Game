@@ -256,6 +256,73 @@ public class Player implements MNKPlayer {
 		return allSequences;
 	}
 
+	public MNKCell[] getExtremes(Sequence Seq, MNKBoard B){
+	
+		MNKCell[] output= new MNKCell[2];
+		MNKCell FC = Seq.getFirstCell();
+		MNKCell LC = Seq.getLastCell();
+		if(LC.i==FC.i){               //Se sono sulla stessa riga
+			if(FC.j-1 <=0&&LC.j+1>B.M){
+			
+			}else if(FC.j-1 <=0){
+			
+			}
+			else if(LC.j+1>B.M){
+
+			}
+			else{
+				output[0].j=FC.j-1;   //ERRORE: assegnare con costruttore
+				output[0].i=FC.i;
+				output[1].j=LC.j+1;
+				output[1].i=LC.i;
+			}
+		}else if(LC.j==FC.j){               //Se sono sulla stessa colonna
+			if(FC.i-1 <=0&&LC.i+1>B.N){
+			
+			}else if(FC.i-1 <=0){
+			
+			}
+			else if(LC.i+1>B.N){
+
+			}
+			else{
+				output[0].i=FC.i-1;
+				output[0].j=FC.j;
+				output[1].i=LC.i+1;
+				output[1].j=LC.j;
+			}
+		}else {
+			if(FC.i>LC.i){
+				if((FC.i+1<=0||FC.j+1<=0)&&(LC.i-1>B.M||LC.j-1>B.N)){
+
+				}else if(FC.i+1<=0||FC.j+1<=0){
+
+				}else if(LC.i-1>B.M||LC.j-1>B.N){
+
+				}else{
+					output[0].i=FC.i+1;
+					output[0].j=FC.j+1;
+					output[1].i=LC.i-1;
+					output[1].j=LC.j-1;
+				}
+			}else if(FC.i>LC.i){
+				if((FC.i-1<=0||FC.j-1<=0)&&(LC.i+1>B.M||LC.j+1>B.N)){
+
+				}else if(FC.i-1<=0||FC.j-1<=0){
+
+				}else if(LC.i+1>B.M||LC.j+1>B.N){
+
+				}else{
+					output[0].i=FC.i-1;
+					output[0].j=FC.j-1;
+					output[1].i=LC.i+1;
+					output[1].j=LC.j+1;
+				}
+			}
+		}
+		return output;
+	}
+
 	// Funzione che ritorna la cella libera più vicina al centro della matrice
 	// FINIRE LA FUNZIONE CON CONTROLLO CHE NON VADA FUORI DAL BORDO
 	public MNKCell freeCenterCell(MNKCell[][] mat, int n, int m) { // i è righe come m. j è colonne come n
