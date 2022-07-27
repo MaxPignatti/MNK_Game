@@ -27,35 +27,37 @@ public class Player implements MNKPlayer {
 
 	}
 
-	public Sequence[] getAllSequences (MNKCell[][] mat, MNKBoard B) {
-		int index=0;
+	public Sequence[] getAllSequences(MNKCell[][] mat, MNKBoard B) {
+		int index = 0;
 		int counter;
-		Sequence[] allSequences = new Sequence[B.M*B.N];
+		Sequence[] allSequences = new Sequence[B.M * B.N];
 
-		//	IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE ORIZZONTALI
+		// IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE ORIZZONTALI
 		for (Sequence lengthZero : allSequences) {
 			lengthZero.setLength(0);
 		}
-		for (int row = 1; row <= B.M; row ++) {
+		for (int row = 1; row <= B.M; row++) {
 			counter = 0;
-			for (int column = 1; column <= B.N; column ++) {
+			for (int column = 1; column <= B.N; column++) {
 				if (column == 1 && mat[row][1].state != MNKCellState.FREE) {
 					counter++;
 				} else {
-					if (mat[row][column].state != mat[row][column - 1].state && mat[row][column - 1].state != MNKCellState.FREE) {
+					if (mat[row][column].state != mat[row][column - 1].state
+							&& mat[row][column - 1].state != MNKCellState.FREE) {
 						if (counter >= 1) {
 							boolean state;
-							if (mat[row][column - 1].state==MNKCellState.P1) {
+							if (mat[row][column - 1].state == MNKCellState.P1) {
 								state = false;
 							} else {
 								state = true;
 							}
-							allSequences[index] = new Sequence(mat[row][column-counter-1], mat[row][column-1], counter, state);
+							allSequences[index] = new Sequence(mat[row][column - counter - 1], mat[row][column - 1],
+									counter, state);
 							index++;
 							counter = 0;
-						} 
+						}
 					} else {
-						if (mat[row][column-1].state == MNKCellState.FREE) {
+						if (mat[row][column - 1].state == MNKCellState.FREE) {
 							counter = 0;
 						} else {
 							counter++;
@@ -67,25 +69,27 @@ public class Player implements MNKPlayer {
 
 		counter = 0;
 
-		//	IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE VERTICALI
-		for (int column = 1; column <= B.M; column ++) {
+		// IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE VERTICALI
+		for (int column = 1; column <= B.M; column++) {
 			counter = 0;
-			for (int row = 1; row <= B.N; row ++) {
+			for (int row = 1; row <= B.N; row++) {
 				if (row == 1 && mat[1][column].state != MNKCellState.FREE) {
 					counter++;
 				} else {
-					if (mat[row][column].state != mat[row - 1][column].state && mat[row - 1][column].state != MNKCellState.FREE) {
+					if (mat[row][column].state != mat[row - 1][column].state
+							&& mat[row - 1][column].state != MNKCellState.FREE) {
 						if (counter >= 1) {
 							boolean state;
-							if (mat[row - 1][column].state==MNKCellState.P1) {
+							if (mat[row - 1][column].state == MNKCellState.P1) {
 								state = false;
 							} else {
 								state = true;
 							}
-							allSequences[index] = new Sequence(mat[row - counter - 1][column], mat[row - 1][column], counter, state);
+							allSequences[index] = new Sequence(mat[row - counter - 1][column], mat[row - 1][column],
+									counter, state);
 							index++;
 							counter = 0;
-						} 
+						}
 					} else {
 						if (mat[row - 1][column].state == MNKCellState.FREE) {
 							counter = 0;
@@ -101,7 +105,8 @@ public class Player implements MNKPlayer {
 		int column = B.N - B.K;
 		int row = 1;
 
-		//	IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE OBLIQUE DAL LATO ALTO AL LATO DESTRO
+		// IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE OBLIQUE DAL LATO ALTO
+		// AL LATO DESTRO
 		while (column >= 1) {
 			int tempColumn = column;
 			int tempRow = row;
@@ -109,18 +114,20 @@ public class Player implements MNKPlayer {
 				if (tempRow == 1 && mat[1][tempColumn].state != MNKCellState.FREE) {
 					counter++;
 				} else {
-					if (mat[tempRow][tempColumn].state != mat[tempRow - 1][tempColumn - 1].state && mat[tempRow - 1][tempColumn - 1].state != MNKCellState.FREE) {
+					if (mat[tempRow][tempColumn].state != mat[tempRow - 1][tempColumn - 1].state
+							&& mat[tempRow - 1][tempColumn - 1].state != MNKCellState.FREE) {
 						if (counter >= 1) {
 							boolean state;
-							if (mat[tempRow - 1][tempColumn - 1].state==MNKCellState.P1) {
+							if (mat[tempRow - 1][tempColumn - 1].state == MNKCellState.P1) {
 								state = false;
 							} else {
 								state = true;
 							}
-							allSequences[index] = new Sequence(mat[tempRow - counter - 1][tempColumn - counter - 1], mat[tempRow - 1][tempColumn - 1], counter, state);
+							allSequences[index] = new Sequence(mat[tempRow - counter - 1][tempColumn - counter - 1],
+									mat[tempRow - 1][tempColumn - 1], counter, state);
 							index++;
 							counter = 0;
-						} 
+						}
 					} else {
 						if (mat[tempRow - 1][tempColumn - 1].state == MNKCellState.FREE) {
 							counter = 0;
@@ -140,7 +147,8 @@ public class Player implements MNKPlayer {
 		column = 1;
 		row = B.M - B.K;
 
-		//	IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE OBLIQUE DAL LATO SINISTRO AL LATO BASSO
+		// IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE OBLIQUE DAL LATO
+		// SINISTRO AL LATO BASSO
 		while (row >= 1) {
 			int tempColumn = column;
 			int tempRow = row;
@@ -148,18 +156,20 @@ public class Player implements MNKPlayer {
 				if (tempColumn == 1 && mat[tempRow][1].state != MNKCellState.FREE) {
 					counter++;
 				} else {
-					if (mat[tempRow][tempColumn].state != mat[tempRow - 1][tempColumn - 1].state && mat[tempRow - 1][tempColumn - 1].state != MNKCellState.FREE) {
+					if (mat[tempRow][tempColumn].state != mat[tempRow - 1][tempColumn - 1].state
+							&& mat[tempRow - 1][tempColumn - 1].state != MNKCellState.FREE) {
 						if (counter >= 1) {
 							boolean state;
-							if (mat[tempRow - 1][tempColumn - 1].state==MNKCellState.P1) {
+							if (mat[tempRow - 1][tempColumn - 1].state == MNKCellState.P1) {
 								state = false;
 							} else {
 								state = true;
 							}
-							allSequences[index] = new Sequence(mat[tempRow - counter - 1][tempColumn - counter - 1], mat[tempRow - 1][tempColumn - 1], counter, state);
+							allSequences[index] = new Sequence(mat[tempRow - counter - 1][tempColumn - counter - 1],
+									mat[tempRow - 1][tempColumn - 1], counter, state);
 							index++;
 							counter = 0;
-						} 
+						}
 					} else {
 						if (mat[tempRow - 1][tempColumn - 1].state == MNKCellState.FREE) {
 							counter = 0;
@@ -179,7 +189,8 @@ public class Player implements MNKPlayer {
 		column = 1;
 		row = B.K;
 
-		//	IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE OBLIQUE DAL LATO SINISTRO AL LATO ALTO
+		// IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE OBLIQUE DAL LATO
+		// SINISTRO AL LATO ALTO
 		while (row <= B.M) {
 			int tempColumn = column;
 			int tempRow = row;
@@ -187,18 +198,20 @@ public class Player implements MNKPlayer {
 				if (tempColumn == 1 && mat[tempRow][1].state != MNKCellState.FREE) {
 					counter++;
 				} else {
-					if (mat[tempRow][tempColumn].state != mat[tempRow + 1][tempColumn - 1].state && mat[tempRow + 1][tempColumn - 1].state != MNKCellState.FREE) {
+					if (mat[tempRow][tempColumn].state != mat[tempRow + 1][tempColumn - 1].state
+							&& mat[tempRow + 1][tempColumn - 1].state != MNKCellState.FREE) {
 						if (counter >= 1) {
 							boolean state;
-							if (mat[tempRow + 1][tempColumn - 1].state==MNKCellState.P1) {
+							if (mat[tempRow + 1][tempColumn - 1].state == MNKCellState.P1) {
 								state = false;
 							} else {
 								state = true;
 							}
-							allSequences[index] = new Sequence(mat[tempRow + counter + 1][tempColumn - counter - 1], mat[tempRow + 1][tempColumn - 1], counter, state);
+							allSequences[index] = new Sequence(mat[tempRow + counter + 1][tempColumn - counter - 1],
+									mat[tempRow + 1][tempColumn - 1], counter, state);
 							index++;
 							counter = 0;
-						} 
+						}
 					} else {
 						if (mat[tempRow + 1][tempColumn - 1].state == MNKCellState.FREE) {
 							counter = 0;
@@ -218,7 +231,8 @@ public class Player implements MNKPlayer {
 		column = B.N - B.K;
 		row = B.M;
 
-		//	IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE OBLIQUE DAL LATO BASSO AL LATO DESTRO
+		// IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE OBLIQUE DAL LATO
+		// BASSO AL LATO DESTRO
 		while (column >= 1) {
 			int tempColumn = column;
 			int tempRow = row;
@@ -226,18 +240,20 @@ public class Player implements MNKPlayer {
 				if (tempRow == B.N && mat[B.N][tempColumn].state != MNKCellState.FREE) {
 					counter++;
 				} else {
-					if (mat[tempRow][tempColumn].state != mat[tempRow + 1][tempColumn - 1].state && mat[tempRow + 1][tempColumn - 1].state != MNKCellState.FREE) {
+					if (mat[tempRow][tempColumn].state != mat[tempRow + 1][tempColumn - 1].state
+							&& mat[tempRow + 1][tempColumn - 1].state != MNKCellState.FREE) {
 						if (counter >= 1) {
 							boolean state;
-							if (mat[tempRow + 1][tempColumn - 1].state==MNKCellState.P1) {
+							if (mat[tempRow + 1][tempColumn - 1].state == MNKCellState.P1) {
 								state = false;
 							} else {
 								state = true;
 							}
-							allSequences[index] = new Sequence(mat[tempRow + counter + 1][tempColumn - counter - 1], mat[tempRow + 1][tempColumn - 1], counter, state);
+							allSequences[index] = new Sequence(mat[tempRow + counter + 1][tempColumn - counter - 1],
+									mat[tempRow + 1][tempColumn - 1], counter, state);
 							index++;
 							counter = 0;
-						} 
+						}
 					} else {
 						if (mat[tempRow + 1][tempColumn - 1].state == MNKCellState.FREE) {
 							counter = 0;
@@ -256,67 +272,64 @@ public class Player implements MNKPlayer {
 		return allSequences;
 	}
 
-	public MNKCell[] getExtremes(Sequence Seq, MNKBoard B){
-	
-		MNKCell[] output= new MNKCell[2];
+	public MNKCell[] getExtremes(Sequence Seq, MNKBoard B) {
+
+		MNKCell[] output = new MNKCell[2];
 		MNKCell FC = Seq.getFirstCell();
 		MNKCell LC = Seq.getLastCell();
-		if(LC.i==FC.i){               //Se sono sulla stessa riga
-			if(FC.j-1 <=0&&LC.j+1>B.M){
-			
-			}else if(FC.j-1 <=0){
-			
+		if (LC.i == FC.i) { // Se sono sulla stessa riga
+			if (FC.j - 1 <= 0 && LC.j + 1 > B.M) {
+			} else if (FC.j - 1 <= 0) {
+				output[0] = new MNKCell(0, 0);
+				output[1] = new MNKCell(LC.i, LC.j + 1);
+			} else if (LC.j + 1 > B.M) {
+				output[0] = new MNKCell(FC.i, FC.j - 1);
+				output[1] = new MNKCell(0, 0);
+			} else {
+				output[0] = new MNKCell(FC.i, FC.j - 1);
+				output[1] = new MNKCell(LC.i, LC.j + 1);
 			}
-			else if(LC.j+1>B.M){
+		} else if (LC.j == FC.j) { // Se sono sulla stessa colonna
+			if (FC.i - 1 <= 0 && LC.i + 1 > B.N) {
+				output[0] = new MNKCell(0, 0);
+				output[1] = new MNKCell(0, 0);
+			} else if (FC.i - 1 <= 0) {
+				output[0] = new MNKCell(0, 0);
+				output[1] = new MNKCell(LC.i + 1, LC.j);
+			} else if (LC.i + 1 > B.N) {
+				output[0] = new MNKCell(FC.i - 1, FC.j);
+				output[1] = new MNKCell(0, 0);
+			} else {
+				output[0] = new MNKCell(FC.i - 1, FC.j);
+				output[1] = new MNKCell(LC.i + 1, LC.j);
+			}
+		} else {
+			if (FC.i > LC.i) {
+				if ((FC.i + 1 <= 0 || FC.j + 1 <= 0) && (LC.i - 1 > B.M || LC.j - 1 > B.N)) {
 
-			}
-			else{
-				output[0].j=FC.j-1;   //ERRORE: assegnare con costruttore
-				output[0].i=FC.i;
-				output[1].j=LC.j+1;
-				output[1].i=LC.i;
-			}
-		}else if(LC.j==FC.j){               //Se sono sulla stessa colonna
-			if(FC.i-1 <=0&&LC.i+1>B.N){
-			
-			}else if(FC.i-1 <=0){
-			
-			}
-			else if(LC.i+1>B.N){
-
-			}
-			else{
-				output[0].i=FC.i-1;
-				output[0].j=FC.j;
-				output[1].i=LC.i+1;
-				output[1].j=LC.j;
-			}
-		}else {
-			if(FC.i>LC.i){
-				if((FC.i+1<=0||FC.j+1<=0)&&(LC.i-1>B.M||LC.j-1>B.N)){
-
-				}else if(FC.i+1<=0||FC.j+1<=0){
-
-				}else if(LC.i-1>B.M||LC.j-1>B.N){
-
-				}else{
-					output[0].i=FC.i+1;
-					output[0].j=FC.j+1;
-					output[1].i=LC.i-1;
-					output[1].j=LC.j-1;
+				} else if (FC.i + 1 <= 0 || FC.j + 1 <= 0) {
+					output[0] = new MNKCell(0, 0);
+					output[1] = new MNKCell(LC.i - 1, LC.j - 1);
+				} else if (LC.i - 1 > B.M || LC.j - 1 > B.N) {
+					output[0] = new MNKCell(FC.i + 1, FC.j + 1);
+					output[1] = new MNKCell(0, 0);
+				} else {
+					output[0] = new MNKCell(FC.i + 1, FC.j + 1);
+					output[1] = new MNKCell(LC.i - 1, LC.j - 1);
 				}
-			}else if(FC.i>LC.i){
-				if((FC.i-1<=0||FC.j-1<=0)&&(LC.i+1>B.M||LC.j+1>B.N)){
-
-				}else if(FC.i-1<=0||FC.j-1<=0){
-
-				}else if(LC.i+1>B.M||LC.j+1>B.N){
-
-				}else{
-					output[0].i=FC.i-1;
-					output[0].j=FC.j-1;
-					output[1].i=LC.i+1;
-					output[1].j=LC.j+1;
+			} else if (FC.i > LC.i) {
+				if ((FC.i - 1 <= 0 || FC.j - 1 <= 0) && (LC.i + 1 > B.M || LC.j + 1 > B.N)) {
+					output[0] = new MNKCell(0, 0);
+					output[1] = new MNKCell(0, 0);
+				} else if (FC.i - 1 <= 0 || FC.j - 1 <= 0) {
+					output[0] = new MNKCell(0, 0);
+					output[1] = new MNKCell(LC.i + 1, LC.j + 1);
+				} else if (LC.i + 1 > B.M || LC.j + 1 > B.N) {
+					output[0] = new MNKCell(FC.i - 1, FC.j - 1);
+					output[1] = new MNKCell(0, 0);
+				} else {
+					output[0] = new MNKCell(FC.i - 1, FC.j - 1);
+					output[1] = new MNKCell(LC.i + 1, LC.j + 1);
 				}
 			}
 		}
