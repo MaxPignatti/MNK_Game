@@ -22,9 +22,17 @@ public class Player implements MNKPlayer {
 	}
 
 	public MNKCell selectCell(MNKCell[] FC, MNKCell[] MC) {
-		Matrice mat = new Matrice(B);
-		mat.initMat();
-
+		for (MNKCell cell : B.getMarkedCells()) {
+            System.out.println(cell.i + " " + cell.j);
+        }
+		Matrix mat = new Matrix(B);
+		mat.initMatrix();
+		mat.printMatrix();
+		//System.out.println("arriva qui?");
+		//Sequence[] sequences = getAllSequences(mat, B);
+		//System.out.println("arriva qui? 2");
+		//printSequences(sequences);
+		return FC[rand.nextInt(FC.length)];
 	}
 
 	public void printSequences(Sequence[] sequences) {
@@ -35,7 +43,7 @@ public class Player implements MNKPlayer {
 		}
 	}
 
-	public Sequence[] getAllSequences(MNKCell[][] mat, MNKBoard B) {
+	public Sequence[] getAllSequences(Matrix Mat, MNKBoard B) {
 		int index = 0;
 		int counter;
 		Sequence[] allSequences = new Sequence[B.M * B.N];
@@ -47,25 +55,25 @@ public class Player implements MNKPlayer {
 		for (int row = 1; row <= B.M; row++) {
 			counter = 0;
 			for (int column = 1; column <= B.N; column++) {
-				if (column == 1 && mat[row][1].state != MNKCellState.FREE) {
+				if (column == 1 && Mat.mat[row][1].state != MNKCellState.FREE) {
 					counter++;
 				} else {
-					if (mat[row][column].state != mat[row][column - 1].state
-							&& mat[row][column - 1].state != MNKCellState.FREE) {
+					if (Mat.mat[row][column].state != Mat.mat[row][column - 1].state
+							&& Mat.mat[row][column - 1].state != MNKCellState.FREE) {
 						if (counter >= 1) {
 							boolean state;
-							if (mat[row][column - 1].state == MNKCellState.P1) {
+							if (Mat.mat[row][column - 1].state == MNKCellState.P1) {
 								state = false;
 							} else {
 								state = true;
 							}
-							allSequences[index] = new Sequence(mat[row][column - counter - 1], mat[row][column - 1],
+							allSequences[index] = new Sequence(Mat.mat[row][column - counter - 1], Mat.mat[row][column - 1],
 									counter, state);
 							index++;
 							counter = 0;
 						}
 					} else {
-						if (mat[row][column - 1].state == MNKCellState.FREE) {
+						if (Mat.mat[row][column - 1].state == MNKCellState.FREE) {
 							counter = 0;
 						} else {
 							counter++;
@@ -81,25 +89,25 @@ public class Player implements MNKPlayer {
 		for (int column = 1; column <= B.M; column++) {
 			counter = 0;
 			for (int row = 1; row <= B.N; row++) {
-				if (row == 1 && mat[1][column].state != MNKCellState.FREE) {
+				if (row == 1 && Mat.mat[1][column].state != MNKCellState.FREE) {
 					counter++;
 				} else {
-					if (mat[row][column].state != mat[row - 1][column].state
-							&& mat[row - 1][column].state != MNKCellState.FREE) {
+					if (Mat.mat[row][column].state != Mat.mat[row - 1][column].state
+							&& Mat.mat[row - 1][column].state != MNKCellState.FREE) {
 						if (counter >= 1) {
 							boolean state;
-							if (mat[row - 1][column].state == MNKCellState.P1) {
+							if (Mat.mat[row - 1][column].state == MNKCellState.P1) {
 								state = false;
 							} else {
 								state = true;
 							}
-							allSequences[index] = new Sequence(mat[row - counter - 1][column], mat[row - 1][column],
+							allSequences[index] = new Sequence(Mat.mat[row - counter - 1][column], Mat.mat[row - 1][column],
 									counter, state);
 							index++;
 							counter = 0;
 						}
 					} else {
-						if (mat[row - 1][column].state == MNKCellState.FREE) {
+						if (Mat.mat[row - 1][column].state == MNKCellState.FREE) {
 							counter = 0;
 						} else {
 							counter++;
@@ -119,25 +127,25 @@ public class Player implements MNKPlayer {
 			int tempColumn = column;
 			int tempRow = row;
 			while (tempColumn <= B.N && tempRow <= B.M) {
-				if (tempRow == 1 && mat[1][tempColumn].state != MNKCellState.FREE) {
+				if (tempRow == 1 && Mat.mat[1][tempColumn].state != MNKCellState.FREE) {
 					counter++;
 				} else {
-					if (mat[tempRow][tempColumn].state != mat[tempRow - 1][tempColumn - 1].state
-							&& mat[tempRow - 1][tempColumn - 1].state != MNKCellState.FREE) {
+					if (Mat.mat[tempRow][tempColumn].state != Mat.mat[tempRow - 1][tempColumn - 1].state
+							&& Mat.mat[tempRow - 1][tempColumn - 1].state != MNKCellState.FREE) {
 						if (counter >= 1) {
 							boolean state;
-							if (mat[tempRow - 1][tempColumn - 1].state == MNKCellState.P1) {
+							if (Mat.mat[tempRow - 1][tempColumn - 1].state == MNKCellState.P1) {
 								state = false;
 							} else {
 								state = true;
 							}
-							allSequences[index] = new Sequence(mat[tempRow - counter - 1][tempColumn - counter - 1],
-									mat[tempRow - 1][tempColumn - 1], counter, state);
+							allSequences[index] = new Sequence(Mat.mat[tempRow - counter - 1][tempColumn - counter - 1],
+									Mat.mat[tempRow - 1][tempColumn - 1], counter, state);
 							index++;
 							counter = 0;
 						}
 					} else {
-						if (mat[tempRow - 1][tempColumn - 1].state == MNKCellState.FREE) {
+						if (Mat.mat[tempRow - 1][tempColumn - 1].state == MNKCellState.FREE) {
 							counter = 0;
 						} else {
 							counter++;
@@ -161,25 +169,25 @@ public class Player implements MNKPlayer {
 			int tempColumn = column;
 			int tempRow = row;
 			while (tempColumn <= B.N && tempRow <= B.M) {
-				if (tempColumn == 1 && mat[tempRow][1].state != MNKCellState.FREE) {
+				if (tempColumn == 1 && Mat.mat[tempRow][1].state != MNKCellState.FREE) {
 					counter++;
 				} else {
-					if (mat[tempRow][tempColumn].state != mat[tempRow - 1][tempColumn - 1].state
-							&& mat[tempRow - 1][tempColumn - 1].state != MNKCellState.FREE) {
+					if (Mat.mat[tempRow][tempColumn].state != Mat.mat[tempRow - 1][tempColumn - 1].state
+							&& Mat.mat[tempRow - 1][tempColumn - 1].state != MNKCellState.FREE) {
 						if (counter >= 1) {
 							boolean state;
-							if (mat[tempRow - 1][tempColumn - 1].state == MNKCellState.P1) {
+							if (Mat.mat[tempRow - 1][tempColumn - 1].state == MNKCellState.P1) {
 								state = false;
 							} else {
 								state = true;
 							}
-							allSequences[index] = new Sequence(mat[tempRow - counter - 1][tempColumn - counter - 1],
-									mat[tempRow - 1][tempColumn - 1], counter, state);
+							allSequences[index] = new Sequence(Mat.mat[tempRow - counter - 1][tempColumn - counter - 1],
+									Mat.mat[tempRow - 1][tempColumn - 1], counter, state);
 							index++;
 							counter = 0;
 						}
 					} else {
-						if (mat[tempRow - 1][tempColumn - 1].state == MNKCellState.FREE) {
+						if (Mat.mat[tempRow - 1][tempColumn - 1].state == MNKCellState.FREE) {
 							counter = 0;
 						} else {
 							counter++;
@@ -203,25 +211,25 @@ public class Player implements MNKPlayer {
 			int tempColumn = column;
 			int tempRow = row;
 			while (tempColumn <= B.N && tempRow >= 1) {
-				if (tempColumn == 1 && mat[tempRow][1].state != MNKCellState.FREE) {
+				if (tempColumn == 1 && Mat.mat[tempRow][1].state != MNKCellState.FREE) {
 					counter++;
 				} else {
-					if (mat[tempRow][tempColumn].state != mat[tempRow + 1][tempColumn - 1].state
-							&& mat[tempRow + 1][tempColumn - 1].state != MNKCellState.FREE) {
+					if (Mat.mat[tempRow][tempColumn].state != Mat.mat[tempRow + 1][tempColumn - 1].state
+							&& Mat.mat[tempRow + 1][tempColumn - 1].state != MNKCellState.FREE) {
 						if (counter >= 1) {
 							boolean state;
-							if (mat[tempRow + 1][tempColumn - 1].state == MNKCellState.P1) {
+							if (Mat.mat[tempRow + 1][tempColumn - 1].state == MNKCellState.P1) {
 								state = false;
 							} else {
 								state = true;
 							}
-							allSequences[index] = new Sequence(mat[tempRow + counter + 1][tempColumn - counter - 1],
-									mat[tempRow + 1][tempColumn - 1], counter, state);
+							allSequences[index] = new Sequence(Mat.mat[tempRow + counter + 1][tempColumn - counter - 1],
+									Mat.mat[tempRow + 1][tempColumn - 1], counter, state);
 							index++;
 							counter = 0;
 						}
 					} else {
-						if (mat[tempRow + 1][tempColumn - 1].state == MNKCellState.FREE) {
+						if (Mat.mat[tempRow + 1][tempColumn - 1].state == MNKCellState.FREE) {
 							counter = 0;
 						} else {
 							counter++;
@@ -245,25 +253,25 @@ public class Player implements MNKPlayer {
 			int tempColumn = column;
 			int tempRow = row;
 			while (tempColumn <= B.N && tempRow >= 1) {
-				if (tempRow == B.N && mat[B.N][tempColumn].state != MNKCellState.FREE) {
+				if (tempRow == B.N && Mat.mat[B.N][tempColumn].state != MNKCellState.FREE) {
 					counter++;
 				} else {
-					if (mat[tempRow][tempColumn].state != mat[tempRow + 1][tempColumn - 1].state
-							&& mat[tempRow + 1][tempColumn - 1].state != MNKCellState.FREE) {
+					if (Mat.mat[tempRow][tempColumn].state != Mat.mat[tempRow + 1][tempColumn - 1].state
+							&& Mat.mat[tempRow + 1][tempColumn - 1].state != MNKCellState.FREE) {
 						if (counter >= 1) {
 							boolean state;
-							if (mat[tempRow + 1][tempColumn - 1].state == MNKCellState.P1) {
+							if (Mat.mat[tempRow + 1][tempColumn - 1].state == MNKCellState.P1) {
 								state = false;
 							} else {
 								state = true;
 							}
-							allSequences[index] = new Sequence(mat[tempRow + counter + 1][tempColumn - counter - 1],
-									mat[tempRow + 1][tempColumn - 1], counter, state);
+							allSequences[index] = new Sequence(Mat.mat[tempRow + counter + 1][tempColumn - counter - 1],
+									Mat.mat[tempRow + 1][tempColumn - 1], counter, state);
 							index++;
 							counter = 0;
 						}
 					} else {
-						if (mat[tempRow + 1][tempColumn - 1].state == MNKCellState.FREE) {
+						if (Mat.mat[tempRow + 1][tempColumn - 1].state == MNKCellState.FREE) {
 							counter = 0;
 						} else {
 							counter++;
@@ -291,7 +299,7 @@ public class Player implements MNKPlayer {
 				output[0] = new MNKCell(0, 0);
 				output[1] = new MNKCell(LC.i, LC.j + 1, LC.state);
 			} else if (LC.j + 1 > B.M) {
-				output[0] = new MNKCell(FC.i, FC.j - 1, FC.State);
+				output[0] = new MNKCell(FC.i, FC.j - 1, FC.state);
 				output[1] = new MNKCell(0, 0);
 			} else {
 				output[0] = new MNKCell(FC.i, FC.j - 1, FC.state);
