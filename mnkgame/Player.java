@@ -27,6 +27,14 @@ public class Player implements MNKPlayer {
 
 	}
 
+	public void printSequences(Sequence[] sequences) {
+		for (Sequence seq : sequences) {
+			if (seq.length != 0) {
+				System.out.println("C'è una sequenza che inizia a riga " + seq.firstCell.i + " colonna " + seq.firstCell.j + " e finisce a riga " + seq.lastCell.i + " colonna " + seq.lastCell.j + ". Lunghezza: " + seq.length);
+			}
+		}
+	}
+
 	public Sequence[] getAllSequences(MNKCell[][] mat, MNKBoard B) {
 		int index = 0;
 		int counter;
