@@ -4,9 +4,13 @@ public class Matrix {
 
     protected MNKCell[][] mat;
     protected MNKBoard B;
+    protected MNKCell[] FC;
+    protected MNKCell[] MC;
 
-    public Matrix(MNKBoard B) {
+    public Matrix(MNKBoard B, MNKCell[] FC, MNKCell[] MC) {
         this.B = B;
+        this.FC = FC;
+        this.MC = MC;
         mat = new MNKCell[B.M][B.N];
     }
 
@@ -15,22 +19,18 @@ public class Matrix {
     }
 
     public void initMatrix() {
-        System.out.println("sono qua");
-        for (MNKCell cell : B.getMarkedCells()) {
-            System.out.println(cell.i + " " + cell.j);
+        for (MNKCell cell : MC) {
             mat[cell.i][cell.j] = cell;
-            System.out.println(mat[cell.i][cell.j].state);
         }
-        for (MNKCell cell : B.getFreeCells()) {
-            System.out.println("cella libera");
+        for (MNKCell cell : FC) {
             mat[cell.i][cell.j] = cell;
         }
     }
 
     public void printMatrix() {
-        for (int i = 0; i < B.N; i++) {
-            for (int j = 0; j < B.M; j++) {
-                System.out.print(mat[j][i].state + " ");
+        for (int i = 0; i < B.M; i++) {
+            for (int j = 0; j < B.N; j++) {
+                System.out.print(mat[i][j].state + " ");
             }
             System.out.print("\n");
         }

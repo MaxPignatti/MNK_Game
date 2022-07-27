@@ -22,15 +22,10 @@ public class Player implements MNKPlayer {
 	}
 
 	public MNKCell selectCell(MNKCell[] FC, MNKCell[] MC) {
-		for (MNKCell cell : B.getMarkedCells()) {
-            System.out.println(cell.i + " " + cell.j);
-        }
-		Matrix mat = new Matrix(B);
+		Matrix mat = new Matrix(B, FC, MC);
 		mat.initMatrix();
 		mat.printMatrix();
-		//System.out.println("arriva qui?");
 		//Sequence[] sequences = getAllSequences(mat, B);
-		//System.out.println("arriva qui? 2");
 		//printSequences(sequences);
 		return FC[rand.nextInt(FC.length)];
 	}
