@@ -289,13 +289,13 @@ public class Player implements MNKPlayer {
 			if (FC.j - 1 <= 0 && LC.j + 1 > B.M) {
 			} else if (FC.j - 1 <= 0) {
 				output[0] = new MNKCell(0, 0);
-				output[1] = new MNKCell(LC.i, LC.j + 1);
+				output[1] = new MNKCell(LC.i, LC.j + 1, LC.state);
 			} else if (LC.j + 1 > B.M) {
-				output[0] = new MNKCell(FC.i, FC.j - 1);
+				output[0] = new MNKCell(FC.i, FC.j - 1, FC.State);
 				output[1] = new MNKCell(0, 0);
 			} else {
-				output[0] = new MNKCell(FC.i, FC.j - 1);
-				output[1] = new MNKCell(LC.i, LC.j + 1);
+				output[0] = new MNKCell(FC.i, FC.j - 1, FC.state);
+				output[1] = new MNKCell(LC.i, LC.j + 1, LC.state);
 			}
 		} else if (LC.j == FC.j) { // Se sono sulla stessa colonna
 			if (FC.i - 1 <= 0 && LC.i + 1 > B.N) {
@@ -303,13 +303,13 @@ public class Player implements MNKPlayer {
 				output[1] = new MNKCell(0, 0);
 			} else if (FC.i - 1 <= 0) {
 				output[0] = new MNKCell(0, 0);
-				output[1] = new MNKCell(LC.i + 1, LC.j);
+				output[1] = new MNKCell(LC.i + 1, LC.j, LC.state);
 			} else if (LC.i + 1 > B.N) {
-				output[0] = new MNKCell(FC.i - 1, FC.j);
+				output[0] = new MNKCell(FC.i - 1, FC.j, FC.state);
 				output[1] = new MNKCell(0, 0);
 			} else {
-				output[0] = new MNKCell(FC.i - 1, FC.j);
-				output[1] = new MNKCell(LC.i + 1, LC.j);
+				output[0] = new MNKCell(FC.i - 1, FC.j, FC.state);
+				output[1] = new MNKCell(LC.i + 1, LC.j, LC.state);
 			}
 		} else {
 			if (FC.i > LC.i) {
@@ -317,13 +317,13 @@ public class Player implements MNKPlayer {
 
 				} else if (FC.i + 1 <= 0 || FC.j + 1 <= 0) {
 					output[0] = new MNKCell(0, 0);
-					output[1] = new MNKCell(LC.i - 1, LC.j - 1);
+					output[1] = new MNKCell(LC.i - 1, LC.j - 1, LC.state);
 				} else if (LC.i - 1 > B.M || LC.j - 1 > B.N) {
-					output[0] = new MNKCell(FC.i + 1, FC.j + 1);
+					output[0] = new MNKCell(FC.i + 1, FC.j + 1, FC.state);
 					output[1] = new MNKCell(0, 0);
 				} else {
-					output[0] = new MNKCell(FC.i + 1, FC.j + 1);
-					output[1] = new MNKCell(LC.i - 1, LC.j - 1);
+					output[0] = new MNKCell(FC.i + 1, FC.j + 1, FC.state);
+					output[1] = new MNKCell(LC.i - 1, LC.j - 1, LC.state);
 				}
 			} else if (FC.i > LC.i) {
 				if ((FC.i - 1 <= 0 || FC.j - 1 <= 0) && (LC.i + 1 > B.M || LC.j + 1 > B.N)) {
@@ -331,13 +331,13 @@ public class Player implements MNKPlayer {
 					output[1] = new MNKCell(0, 0);
 				} else if (FC.i - 1 <= 0 || FC.j - 1 <= 0) {
 					output[0] = new MNKCell(0, 0);
-					output[1] = new MNKCell(LC.i + 1, LC.j + 1);
+					output[1] = new MNKCell(LC.i + 1, LC.j + 1, LC.state);
 				} else if (LC.i + 1 > B.M || LC.j + 1 > B.N) {
-					output[0] = new MNKCell(FC.i - 1, FC.j - 1);
+					output[0] = new MNKCell(FC.i - 1, FC.j - 1, FC.state);
 					output[1] = new MNKCell(0, 0);
 				} else {
-					output[0] = new MNKCell(FC.i - 1, FC.j - 1);
-					output[1] = new MNKCell(LC.i + 1, LC.j + 1);
+					output[0] = new MNKCell(FC.i - 1, FC.j - 1, FC.state);
+					output[1] = new MNKCell(LC.i + 1, LC.j + 1, LC.state);
 				}
 			}
 		}
