@@ -22,16 +22,11 @@ public class Player implements MNKPlayer {
 	}
 
 	public MNKCell selectCell(MNKCell[] FC, MNKCell[] MC) {
-		for (MNKCell cell : B.getMarkedCells()) {
-			System.out.println(cell.i + " " + cell.j);
-		}
 		Matrix mat = new Matrix(B, FC, MC);
 		mat.initMatrix();
 		mat.printMatrix();
-		// System.out.println("arriva qui?");
 		Sequence[] sequences = getAllSequences(mat, B);
-		// System.out.println("arriva qui? 2");
-		// printSequences(sequences);
+		printSequences(sequences);
 		return FC[rand.nextInt(FC.length)];
 	}
 
@@ -43,275 +38,89 @@ public class Player implements MNKPlayer {
 						+ ". Lunghezza: " + seq.length);
 			}
 		}
+		System.out.println("socmiga");
 	}
 
 	public Sequence[] getAllSequences(Matrix Mat, MNKBoard B) {
 		int index = 0;
-		int counter;
+		int counter = 0;
+		boolean ok;
+		boolean state;
 		Sequence[] allSequences = new Sequence[B.M * B.N];
+		MNKCell defaultCell = new MNKCell(0, 0);
 
-		// IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE ORIZZONTALI
-		System.out.println("Prova");
-		// for (Sequence lengthZero : allSequences) {
-		// lengthZero.setLength(0); //ERRORE 1
-		// }
-		for (int row = 0; row < B.M; row++) {
-			System.out.println("Prova");
-			counter = 0;
-			for (int column = 0; column < B.N; column++) {
-				if (column == 0 && Mat.mat[row][0].state != MNKCellState.FREE) {
-					counter++;
-				} else if (column == 0 && Mat.mat[row][0].state == MNKCellState.FREE) {
-					counter = 0;
-				} else {
-					System.out.println("Prova");
-					if (Mat.mat[row][column].state != Mat.mat[row][column - 1].state
-							&& Mat.mat[row][column - 1].state != MNKCellState.FREE) {
-						if (counter >= 1) {
-							boolean state;
-							if (Mat.mat[row][column - 1].state == MNKCellState.P1) {
-								state = false;
+		for (int i=0; i<(B.M * B.N); i++) {
+			allSequences[i] = new Sequence(defaultCell, defaultCell, 0, false);
+		}
+		
+		for (int row = 0; row<B.M; row++) {
+			for (int column = 0; column<B.N; column++) {
+				MNKCell toControl = Mat.mat[row][column];
+				if (toControl.state != MNKCellState.FREE) {
+					counter = 1;
+					ok = false;
+					if (row == 0) {
+						ok = true;
+					} else if (toControl.state != Mat.mat[row - 1][column].state) {
+						ok = true;
+					}
+					if (ok) {
+						//CONTROLLO VERTICALE
+						int tempRow = row;
+						while(tempRow < B.M - 1) {
+							tempRow++;
+							if (Mat.mat[tempRow][column].state == Mat.mat[tempRow - 1][column].state) {
+								counter++;
 							} else {
-								state = true;
+								tempRow--;
+								break;
 							}
-							System.out.println("Prova");
-							allSequences[index] = new Sequence(Mat.mat[row][column - counter - 1],
-									Mat.mat[row][column - 1],
-									counter, state);
-							index++;
-							System.out.println("Prova");
-							counter = 0;
 						}
-					} else {
-						if (Mat.mat[row][column - 1].state == MNKCellState.FREE) {
-							counter = 0;
-						} else {
-							counter++;
+						if (counter > 1) {
+                            if (Mat.mat[tempRow][column].state == MNKCellState.P1) {
+                                state = false;
+                            } else {
+                                state = true;
+                            }
+							allSequences[index] = new Sequence(Mat.mat[tempRow - counter][column],
+                                    Mat.mat[tempRow][column], counter, state);
 						}
+						index++; 
+					}
+					counter = 1;
+					ok = false;
+					if (column == 0) {
+						ok = true;
+					} else if (toControl.state != Mat.mat[row][column - 1].state) {
+						ok = true;
+					}
+					if (ok) {
+						//CONTROLLO ORIZZONTALE
+					}
+					counter = 1;
+					ok = false;
+					if (row == 0 || column == 0) {
+						ok = true;
+					} else if (toControl.state != Mat.mat[row - 1][column - 1].state) {
+						ok = true;
+					}
+					if (ok) {
+						//CONTROLLO OBLIQUO BASSO-DESTRA
+					}
+					counter = 1;
+					ok = false;
+					if (row == B.M - 1 || column == 0) {
+						ok = true;
+					} else if (toControl.state != Mat.mat[row + 1][column - 1].state) {
+						ok = true;
+					}
+					if (ok) {
+						//CONTROLLO OBLIQUO ALTO-SINISTRA
 					}
 				}
 			}
 		}
 
-		counter = 0;
-
-		// IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE VERTICALI
-		for (int column = 0; column < B.M; column++) {
-			counter = 0;
-			for (int row = 0; row < B.N; row++) {
-				if (row == 0 && Mat.mat[0][column].state != MNKCellState.FREE) {
-					counter++;
-				} else if (row == 0 && Mat.mat[0][column].state == MNKCellState.FREE) {
-					counter = 0;
-				} else {
-					if (Mat.mat[row][column].state != Mat.mat[row - 1][column].state
-							&& Mat.mat[row - 1][column].state != MNKCellState.FREE) {
-						if (counter >= 1) {
-							boolean state;
-							if (Mat.mat[row - 1][column].state == MNKCellState.P1) {
-								state = false;
-							} else {
-								state = true;
-							}
-							allSequences[index] = new Sequence(Mat.mat[row - counter - 1][column],
-									Mat.mat[row - 1][column],
-									counter, state);
-							index++;
-							counter = 0;
-						}
-					} else {
-						if (Mat.mat[row - 1][column].state == MNKCellState.FREE) {
-							counter = 0;
-						} else {
-							counter++;
-						}
-					}
-				}
-			}
-		}
-		System.out.println("Prova Finale");
-
-		counter = 0;
-		int column = B.N - B.K;
-		int row = 0;
-
-		// IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE OBLIQUE DAL LATO ALTO
-		// AL LATO DESTRO
-		while (column >= 0) {
-			int tempColumn = column;
-			int tempRow = row;
-			while (tempColumn < B.N && tempRow < B.M) {
-				System.out.println("Prova Ancora");
-
-				if (tempRow == 0 && Mat.mat[0][tempColumn].state != MNKCellState.FREE) {
-					counter++;
-				} else if (tempRow == 0 && Mat.mat[0][tempColumn].state == MNKCellState.FREE) {
-					counter = 0;
-				} else {
-					System.out.println("Prova Ancora");
-					if (Mat.mat[tempRow][tempColumn].state != Mat.mat[tempRow - 1][tempColumn - 1].state
-							&& Mat.mat[tempRow - 1][tempColumn - 1].state != MNKCellState.FREE) {
-						if (counter >= 1) {
-							boolean state;
-							if (Mat.mat[tempRow - 1][tempColumn - 1].state == MNKCellState.P1) {
-								state = false;
-							} else {
-								state = true;
-							}
-							allSequences[index] = new Sequence(Mat.mat[tempRow - counter - 1][tempColumn - counter - 1],
-									Mat.mat[tempRow - 1][tempColumn - 1], counter, state);
-							index++;
-							counter = 0;
-						}
-					} else {
-						if (Mat.mat[tempRow - 1][tempColumn - 1].state == MNKCellState.FREE) {
-							counter = 0;
-						} else {
-							counter++;
-						}
-					}
-				}
-				tempColumn++;
-				tempRow++;
-			}
-			column--;
-			counter = 0;
-		}
-		System.out.println("Altra prova");
-		counter = 0;
-		column = 0;
-		row = B.M - B.K;
-
-		// IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE OBLIQUE DAL LATO
-		// SINISTRO AL LATO BASSO
-		while (row >= 0) {
-			int tempColumn = column;
-			int tempRow = row;
-			while (tempColumn < B.N && tempRow < B.M) {
-				if (tempColumn == 0 && Mat.mat[tempRow][0].state != MNKCellState.FREE) {
-					counter++;
-				} else if (tempColumn == 0 && Mat.mat[tempRow][0].state == MNKCellState.FREE) {
-					counter = 0;
-				} else {
-					if (Mat.mat[tempRow][tempColumn].state != Mat.mat[tempRow - 1][tempColumn - 1].state
-							&& Mat.mat[tempRow - 1][tempColumn - 1].state != MNKCellState.FREE) {
-						if (counter >= 1) {
-							boolean state;
-							if (Mat.mat[tempRow - 1][tempColumn - 1].state == MNKCellState.P1) {
-								state = false;
-							} else {
-								state = true;
-							}
-							allSequences[index] = new Sequence(Mat.mat[tempRow - counter - 1][tempColumn - counter - 1],
-									Mat.mat[tempRow - 1][tempColumn - 1], counter, state);
-							index++;
-							counter = 0;
-						}
-					} else {
-						if (Mat.mat[tempRow - 1][tempColumn - 1].state == MNKCellState.FREE) {
-							counter = 0;
-						} else {
-							counter++;
-						}
-					}
-				}
-				tempColumn++;
-				tempRow++;
-			}
-			row--;
-			counter = 0;
-		}
-
-		counter = 0;
-		column = 0;
-		row = B.K;
-
-		System.out.println("Cazzo");
-		// IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE OBLIQUE DAL LATO
-		// SINISTRO AL LATO ALTO
-		while (row < B.M) {
-			int tempColumn = column;
-			int tempRow = row;
-			while (tempColumn < B.N && tempRow >= 0) {
-				if (tempColumn == 0 && Mat.mat[tempRow][0].state != MNKCellState.FREE) {
-					counter++;
-				} else if (tempColumn == 0 && Mat.mat[tempRow][0].state != MNKCellState.FREE) {
-					counter = 0;
-				} else {
-					System.out.println("Cazzo");
-					if (Mat.mat[tempRow][tempColumn].state != Mat.mat[tempRow + 1][tempColumn - 1].state
-							&& Mat.mat[tempRow + 1][tempColumn - 1].state != MNKCellState.FREE) {
-						if (counter >= 1) {
-							boolean state;
-							if (Mat.mat[tempRow + 1][tempColumn - 1].state == MNKCellState.P1) {
-								state = false;
-							} else {
-								state = true;
-							}
-							allSequences[index] = new Sequence(Mat.mat[tempRow + counter + 1][tempColumn - counter - 1],
-									Mat.mat[tempRow + 1][tempColumn - 1], counter, state);
-							index++;
-							counter = 0;
-						}
-					} else {
-						if (Mat.mat[tempRow + 1][tempColumn - 1].state == MNKCellState.FREE) {
-							counter = 0;
-						} else {
-							counter++;
-						}
-					}
-				}
-				tempColumn++;
-				tempRow--;
-			}
-			row++;
-			counter = 0;
-		}
-
-		counter = 0;
-		column = B.N - B.K;
-		row = B.M;
-
-		// IL PROSSIMO CICLO AGGIUNGE ALL'ARRAY DI SEQUENZE QUELLE OBLIQUE DAL LATO
-		// BASSO AL LATO DESTRO
-		while (column >= 0) {
-			int tempColumn = column;
-			int tempRow = row;
-			while (tempColumn < B.N && tempRow >= 0) {
-				if (tempRow == B.N && Mat.mat[B.N][tempColumn].state != MNKCellState.FREE) {
-					counter++;
-				} else if (tempRow == B.N && Mat.mat[B.N][tempColumn].state == MNKCellState.FREE) {
-					counter = 0;
-				} else {
-					if (Mat.mat[tempRow][tempColumn].state != Mat.mat[tempRow + 1][tempColumn - 1].state
-							&& Mat.mat[tempRow + 1][tempColumn - 1].state != MNKCellState.FREE) {
-						if (counter >= 1) {
-							boolean state;
-							if (Mat.mat[tempRow + 1][tempColumn - 1].state == MNKCellState.P1) {
-								state = false;
-							} else {
-								state = true;
-							}
-							allSequences[index] = new Sequence(Mat.mat[tempRow + counter + 1][tempColumn - counter - 1],
-									Mat.mat[tempRow + 1][tempColumn - 1], counter, state);
-							index++;
-							counter = 0;
-						}
-					} else {
-						if (Mat.mat[tempRow + 1][tempColumn - 1].state == MNKCellState.FREE) {
-							counter = 0;
-						} else {
-							counter++;
-						}
-					}
-				}
-				tempColumn++;
-				tempRow--;
-			}
-			column--;
-			counter = 0;
-		}
-		System.out.println("cazzone");
 		return allSequences;
 	}
 
