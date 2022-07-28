@@ -35,22 +35,20 @@ public class Player implements MNKPlayer {
 			if (seq.length != 0) {
 				System.out.println("C'è una sequenza che inizia a riga " + seq.firstCell.i + " colonna "
 						+ seq.firstCell.j + " e finisce a riga " + seq.lastCell.i + " colonna " + seq.lastCell.j
-						+ ". Lunghezza: " + seq.length);
+						+ ". Lunghezza: " + seq.length + ". Player: " + seq.state);
 			}
 		}
-		System.out.println("socmiga");
 	}
 
 	public Sequence[] getAllSequences(Matrix Mat, MNKBoard B) {
 		int index = 0;
 		int counter = 0;
 		boolean ok;
-		boolean state;
 		Sequence[] allSequences = new Sequence[B.M * B.N];
 		MNKCell defaultCell = new MNKCell(0, 0);
 
 		for (int i=0; i<(B.M * B.N); i++) {
-			allSequences[i] = new Sequence(defaultCell, defaultCell, 0, false);
+			allSequences[i] = new Sequence(defaultCell, defaultCell, 0, MNKCellState.FREE);
 		}
 		
 		for (int row = 0; row<B.M; row++) {
@@ -77,15 +75,11 @@ public class Player implements MNKPlayer {
 							}
 						}
 						if (counter > 1) {
-                            if (Mat.mat[tempRow][column].state == MNKCellState.P1) {
-                                state = false;
-                            } else {
-                                state = true;
-                            }
-							allSequences[index] = new Sequence(Mat.mat[tempRow - counter][column],
-                                    Mat.mat[tempRow][column], counter, state);
+							allSequences[index] = new Sequence(Mat.mat[tempRow - (counter - 1)][column],
+                                    Mat.mat[tempRow][column], counter, Mat.mat[tempRow][column].state);
+							index++; 
 						}
-						index++; 
+						
 					}
 					counter = 1;
 					ok = false;
@@ -96,6 +90,21 @@ public class Player implements MNKPlayer {
 					}
 					if (ok) {
 						//CONTROLLO ORIZZONTALE
+						int tempColumn = column;
+						while(tempColumn < B.N - 1) {
+							tempColumn++;
+							if (Mat.mat[row][tempColumn].state == Mat.mat[row][tempColumn - 1].state) {
+								counter++;
+							} else {
+								tempColumn--;
+								break;
+							}
+						}
+						if (counter > 1) {
+							allSequences[index] = new Sequence(Mat.mat[row][tempColumn - (counter - 1)],
+                                    Mat.mat[row][tempColumn], counter, Mat.mat[row][tempColumn].state);
+							index++;
+						} 
 					}
 					counter = 1;
 					ok = false;
@@ -106,6 +115,24 @@ public class Player implements MNKPlayer {
 					}
 					if (ok) {
 						//CONTROLLO OBLIQUO BASSO-DESTRA
+						int tempColumn = column;
+						int tempRow = row;
+						while(tempColumn < B.N - 1 && tempRow < B.M - 1) {
+							tempColumn++;
+							tempRow++;
+							if (Mat.mat[tempRow][tempColumn].state == Mat.mat[tempRow - 1][tempColumn - 1].state) {
+								counter++;
+							} else {
+								tempColumn--;
+								tempRow--;
+								break;
+							}
+						}
+						if (counter > 1) {
+							allSequences[index] = new Sequence(Mat.mat[tempRow - (counter - 1)][tempColumn - (counter - 1)],
+                                    Mat.mat[tempRow][tempColumn], counter, Mat.mat[tempRow][tempColumn].state);
+							index++;
+						} 
 					}
 					counter = 1;
 					ok = false;
@@ -115,12 +142,29 @@ public class Player implements MNKPlayer {
 						ok = true;
 					}
 					if (ok) {
-						//CONTROLLO OBLIQUO ALTO-SINISTRA
+						//CONTROLLO OBLIQUO ALTO-DESTRA
+						int tempColumn = column;
+						int tempRow = row;
+						while(tempColumn < B.N - 1 && tempRow > 0) {
+							tempColumn++;
+							tempRow--;
+							if (Mat.mat[tempRow][tempColumn].state == Mat.mat[tempRow + 1][tempColumn - 1].state) {
+								counter++;
+							} else {
+								tempColumn--;
+								tempRow++;
+								break;
+							}
+						}
+						if (counter > 1) {
+							allSequences[index] = new Sequence(Mat.mat[tempRow + (counter - 1)][tempColumn - (counter - 1)],
+                                    Mat.mat[tempRow][tempColumn], counter, Mat.mat[tempRow][tempColumn].state);
+							index++;
+						} 
 					}
 				}
 			}
 		}
-
 		return allSequences;
 	}
 

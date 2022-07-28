@@ -4,9 +4,9 @@ public class Sequence {
     protected MNKCell firstCell;
     protected MNKCell lastCell;
     protected int length;
-    protected boolean state; //0=player1 1=player2
+    protected MNKCellState state; //0=player1 1=player2
 
-    public Sequence (MNKCell firstCell, MNKCell lastCell, int length, boolean state) {
+    public Sequence (MNKCell firstCell, MNKCell lastCell, int length, MNKCellState state) {
         this.firstCell = firstCell;
         this.lastCell = lastCell;
         this.length = length;
@@ -29,7 +29,7 @@ public class Sequence {
         this.length = length;
     }
 
-    public boolean getState () {
+    public MNKCellState getState () {
         return state;
     }
 }
